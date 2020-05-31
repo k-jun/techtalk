@@ -1,3 +1,40 @@
+## environment valiables
+
+- REDIS_ENDPOINT
+- DB_USER
+- DB_NAME
+- DB_PASSWORD
+
+## apis
+
+in this case this is for load testing, if you send channel_id=0, it will get messages from a random channel
+
+GET "channels/{channel_id}/messages"
+POST "channels/{channel_id}/messages"
+```json
+{
+  user_id: "1",
+  type: "sample type",
+  body: "sample body"
+}
+```
+
+PUT "channels/{channel_id}/messages"
+```json
+{
+  message_id: "1",
+  body: "updated body"
+}
+```
+
+DELETE "channels/{channel_id}/messages"
+```json
+{
+  message_id: "1"
+}
+```
+
+
 
 ## Content
 
