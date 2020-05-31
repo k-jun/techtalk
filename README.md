@@ -10,6 +10,8 @@
 in this case this is for load testing, if you send channel_id=0, it will get messages from a random channel
 
 GET "channels/{channel_id}/messages"
+
+
 POST "channels/{channel_id}/messages"
 ```json
 {

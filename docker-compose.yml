@@ -8,8 +8,8 @@ services:
       - mysql-data:/var/lib/mysql
       - ./scripts:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-      MYSQL_ROOT_PASSWORD: ""
+      # MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_ROOT_PASSWORD: "password1!"
       MYSQL_DATABASE: mysqldb
   redis:
     image: redis

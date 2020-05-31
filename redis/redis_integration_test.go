@@ -47,8 +47,8 @@ func TestRedisSet(t *testing.T) {
 }
 
 func TestRedisSetAndGet(t *testing.T) {
-	key := "fdlksajfkdsja"
-	value := "fkljdsakfjdsakjfkdsankvndaskbhfvdklhakljh"
+	key := "qawsedrf"
+	value := "rdftgyhujikolp"
 
 	err := r.Set(key, value)
 	if err != nil {
