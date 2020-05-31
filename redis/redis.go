@@ -4,27 +4,32 @@ import (
 	"github.com/go-redis/redis"
 )
 
-type Redis struct {
+type IRedis interface {
+	Ping() (string, error)
+	Get(k string) (string, error)
+	Set(k string, v string) error
+}
+
+type sRedis struct {
 	rc *redis.Client
 }
 
-func NewRedisClient(a string) (*Redis, error) {
-	rc := redis.NewClient(&redis.Options{Addr: a})
+func NewSRedis(rc *redis.Client) (IRedis, error) {
 	_, err := rc.Ping().Result()
 	if err != nil {
 		return nil, err
 	}
-	return &Redis{rc: rc}, nil
+	return &sRedis{rc: rc}, nil
 }
 
-func (r *Redis) Ping() (string, error) {
+func (r *sRedis) Ping() (string, error) {
 	return r.rc.Ping().Result()
 }
 
-func (r *Redis) Get(key string) (string, error) {
+func (r *sRedis) Get(key string) (string, error) {
 	return r.rc.Get(key).Result()
 }
 
-func (r *Redis) Set(key string, value string) error {
+func (r *sRedis) Set(key string, value string) error {
 	return r.rc.Set(key, value, 0).Err()
 }

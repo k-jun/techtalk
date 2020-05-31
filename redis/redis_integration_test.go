@@ -9,11 +9,13 @@ import (
 	"github.com/go-redis/redis"
 )
 
-var r *Redis
+var r IRedis
 
 func TestMain(m *testing.M) {
 	var err error
-	r, err = NewRedisClient("localhost:6379")
+
+	rc := redis.NewClient(&redis.Options{Addr: "localhost:6379"})
+	r, err = NewSRedis(rc)
 	if err != nil {
 		os.Exit(1)
 	}
@@ -30,7 +32,6 @@ func TestRedisPing(t *testing.T) {
 		t.Fatal("message was not PONG")
 	}
 }
-
 func TestRedisGet(t *testing.T) {
 	_, err := r.Get("non-value")
 	if err != nil && err != redis.Nil {
