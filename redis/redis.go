@@ -17,13 +17,14 @@ func NewRedisClient(a string) (*Redis, error) {
 	return &Redis{rc: rc}, nil
 }
 
-func Get(key string) (string, error) {
-	// use redis client to get data by key
-
-	return "", nil
+func (r *Redis) Ping() (string, error) {
+	return r.rc.Ping().Result()
 }
 
-func Set(key string, value string) error {
-	// use redis client to store data by key
-	return nil
+func (r *Redis) Get(key string) (string, error) {
+	return r.rc.Get(key).Result()
+}
+
+func (r *Redis) Set(key string, value string) error {
+	return r.rc.Set(key, value, 0).Err()
 }
