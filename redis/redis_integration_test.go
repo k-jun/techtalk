@@ -4,6 +4,7 @@ package redis
 
 import (
 	"os"
+	"techtalk/utils"
 	"testing"
 
 	"github.com/go-redis/redis"
@@ -14,7 +15,7 @@ var r IRedis
 func TestMain(m *testing.M) {
 	var err error
 
-	rc := redis.NewClient(&redis.Options{Addr: "localhost:6379"})
+	rc := utils.ConnectToRedis()
 	r, err = NewSRedis(rc)
 	if err != nil {
 		os.Exit(1)
@@ -28,7 +29,6 @@ func TestRedisPing(t *testing.T) {
 		t.Fatal(err)
 	}
 	if pong != "PONG" {
-
 		t.Fatal("message was not PONG")
 	}
 }

@@ -1,23 +1,25 @@
 package main
 
 import (
-	"database/sql"
-	"github.com/go-redis/redis"
+	"techtalk/server"
+	"techtalk/utils"
+
 	_ "github.com/go-sql-driver/mysql"
-	"net/http"
-	"techtalk/controllers"
-)
-
-var db *sql.DB
-var rc *redis.Client
-
-const (
-	RedisAddress = "localhost:6379"
 )
 
 func main() {
-	http.Handle("/messages", http.HandlerFunc(controllers.GetMessages))
 
-	http.ListenAndServe(":8000", nil)
+	conn, err := utils.ConnectToDB()
+	rc := utils.ConnectToRedis()
 
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+
+	s := server.NewServer(conn, rc)
+	err = s.ListenAndServe()
+	if err != nil {
+		panic(err)
+	}
 }
