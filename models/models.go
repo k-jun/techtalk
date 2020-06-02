@@ -1,11 +1,11 @@
 package models
 
 type Message struct {
-	ID        string
-	ChannelID string
-	UserID    string
-	Body      string
-	Type      string
-	CreatedAt int64
-	UpdatedAt int64
+	ID        string `json:"id"`
+	ChannelID string `json:"channel_id"`
+	UserID    string `json:"user_id"`
+	Body      string `json:"body"`
+	Type      string `json:"type"`
+	CreatedAt int64  `json:"created_at"`
+	UpdatedAt int64  `json:"updated_at"`
 }
