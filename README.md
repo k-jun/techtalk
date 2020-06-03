@@ -7,12 +7,10 @@
 
 ## apis
 
-in this case this is for load testing, if you send channel_id=0, it will get messages from a random channel
+in this case this is for load testing, if you send channel_id=0, the server fills the id with random number which is 1 to 1000
 
-GET "channels/{channel_id}/messages"
-
-
-POST "channels/{channel_id}/messages"
+* GET "channels/{channel_id}/messages"
+* POST "channels/{channel_id}/messages"
 ```json
 {
   "user_id": "1",
@@ -21,19 +19,19 @@ POST "channels/{channel_id}/messages"
 }
 ```
 
-PUT "channels/{channel_id}/messages"
+* PUT "/messages"
 ```json
 {
-  "message_id": "1",
+  "id": "1",
   "type": "updated type",
   "body": "updated body"
 }
 ```
 
-DELETE "channels/{channel_id}/messages"
+* DELETE "/messages"
 ```json
 {
-  "message_id": "1"
+  "id": "1"
 }
 ```
 
