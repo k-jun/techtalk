@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
+	"math/rand"
 	"net/http"
+	"strconv"
 	"techtalk/mysql"
 	"techtalk/redis"
 
@@ -11,8 +13,8 @@ import (
 
 func GetMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		messages, err := db.GetChannelMessage(vars["id"])
+		cid := retrieveId(r)
+		messages, err := db.GetChannelMessage(cid)
 		if err != nil {
 			BadRequest(w, r)
 			return
@@ -26,4 +28,15 @@ func GetMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 
 		w.Write(bytes)
 	}
+}
+
+func retrieveId(r *http.Request) string {
+	// if number is 0, generate random number
+	vars := mux.Vars(r)
+	cid := vars["id"]
+	if cid == "0" {
+		cid = strconv.Itoa(rand.Intn(1000))
+	}
+
+	return cid
 }

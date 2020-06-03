@@ -1,6 +1,10 @@
 package main
 
 import (
+	crand "crypto/rand"
+	"math"
+	"math/big"
+	"math/rand"
 	"techtalk/server"
 	"techtalk/utils"
 
@@ -22,4 +26,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func init() {
+	seed, _ := crand.Int(crand.Reader, big.NewInt(math.MaxInt64))
+	rand.Seed(seed.Int64())
 }
