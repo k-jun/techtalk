@@ -88,7 +88,7 @@ func (m *sMySQL) UpdateChannelMessage(message *models.Message) error {
 		return err
 	}
 	if num != 1 {
-		return errors.New("message not found")
+		return errors.New("message not found or no-update for the record")
 	}
 	return nil
 }
