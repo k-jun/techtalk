@@ -15,24 +15,25 @@ GET "channels/{channel_id}/messages"
 POST "channels/{channel_id}/messages"
 ```json
 {
-  user_id: "1",
-  type: "sample type",
-  body: "sample body"
+  "user_id": "1",
+  "type": "sample type",
+  "body": "sample body"
 }
 ```
 
 PUT "channels/{channel_id}/messages"
 ```json
 {
-  message_id: "1",
-  body: "updated body"
+  "message_id": "1",
+  "type": "updated type",
+  "body": "updated body"
 }
 ```
 
 DELETE "channels/{channel_id}/messages"
 ```json
 {
-  message_id: "1"
+  "message_id": "1"
 }
 ```
 
