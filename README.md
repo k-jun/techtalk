@@ -48,6 +48,7 @@ in this case this is for load testing, if you send channel_id=0, the server fill
 ## TODOs
 
 * change user in Dockerfile from root to application specific user for sequlity
+* the app doesn't wait untill the db ready
 
 
 ## Content
