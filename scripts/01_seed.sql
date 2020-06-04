@@ -12,9 +12,13 @@ INSERT INTO users (id, display_name, updated_at, created_at) VALUES
 
 
 INSERT INTO `users` (`display_name`, `created_at`, `updated_at`) SELECT T1.`display_name`, T1.`created_at`, T1.`updated_at` from `users` as T1 CROSS JOIN `users` as T2 ON T2.id IN (1, 2, 3, 4, 5, 6, 7, 8, 9);
+-- 100
 INSERT INTO `users` (`display_name`, `created_at`, `updated_at`) SELECT T1.`display_name`, T1.`created_at`, T1.`updated_at` from `users` as T1 CROSS JOIN `users` as T2 ON T2.id IN (1, 2, 3, 4, 5, 6, 7, 8, 9);
+-- 1,000
 INSERT INTO `users` (`display_name`, `created_at`, `updated_at`) SELECT T1.`display_name`, T1.`created_at`, T1.`updated_at` from `users` as T1 CROSS JOIN `users` as T2 ON T2.id IN (1, 2, 3, 4, 5, 6, 7, 8, 9);
+-- 10,000
 INSERT INTO `users` (`display_name`, `created_at`, `updated_at`) SELECT T1.`display_name`, T1.`created_at`, T1.`updated_at` from `users` as T1 CROSS JOIN `users` as T2 ON T2.id IN (1, 2, 3, 4, 5, 6, 7, 8, 9);
+-- 100,000
 
 UPDATE users SET
 updated_at = CEIL(RAND() * 2678400 + 1561939200),
