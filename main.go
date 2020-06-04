@@ -5,6 +5,7 @@ import (
 	"math"
 	"math/big"
 	"math/rand"
+	"os"
 	"techtalk/server"
 	"techtalk/utils"
 
@@ -12,11 +13,11 @@ import (
 )
 
 func main() {
-	dbhost := "localhost"
-	dbusername := "root"
-	dbpassword := "password1!"
-	dbname := "mysqldb"
-	redisEndpoint := "localhost:6379"
+	dbhost := os.Getenv("DB_HOST")
+	dbusername := os.Getenv("DB_USER")
+	dbpassword := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+	redisEndpoint := os.Getenv("REDIS_ENDPOINT")
 
 	conn, err := utils.ConnectToDB(dbusername, dbpassword, dbhost, dbname)
 	rc := utils.ConnectToRedis(redisEndpoint)

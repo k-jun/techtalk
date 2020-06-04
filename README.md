@@ -6,6 +6,14 @@
 - DB_NAME
 - DB_PASSWORD
 
+```sh
+export DB_USER="root" \
+export DB_PASSWORD="password1!" \
+export DB_HOST="localhost" \
+export DB_NAME="mysqldb" \
+export REDIS_ENDPOINT="localhost:6379"
+```
+
 ## apis
 
 in this case this is for load testing, if you send channel_id=0, the server fills the id with random number which is 1 to 1000
