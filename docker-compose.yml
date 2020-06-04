@@ -1,5 +1,18 @@
 version: '3'
 services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - "mysql"
+      - "redis"
+    environment:
+      - "DB_USER=root"
+      - "DB_PASSWORD=password1!"
+      - "DB_HOST=host.docker.internal"
+      - "DB_NAME=mysqldb"
+      - "REDIS_ENDPOINT=host.docker.internal:6379"
   mysql:
     image: mysql:5.7
     ports:

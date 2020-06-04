@@ -45,6 +45,10 @@ in this case this is for load testing, if you send channel_id=0, the server fill
 ```
 
 
+## TODOs
+
+* change user in Dockerfile from root to application specific user for sequlity
+
 
 ## Content
 
@@ -76,3 +80,6 @@ https://qiita.com/furu8ma/items/fb7a45388bfe323b46c1
 
 - gostress
 https://github.com/karupanerura/gostress
+
+
+
