@@ -8,15 +8,12 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func ConnectToDB() (*sql.DB, error) {
-	dbusername := "root"
-	dbpassword := "password1!"
-	dbname := "mysqldb"
-	dbinfo := fmt.Sprintf("%s:%s@/%s", dbusername, dbpassword, dbname)
+func ConnectToDB(dbusername, dbpassword, dbhost, dbname string) (*sql.DB, error) {
+	dbinfo := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s", dbusername, dbpassword, dbhost, dbname)
 	conn, err := sql.Open("mysql", dbinfo)
 	return conn, err
 }
 
-func ConnectToRedis() *redis.Client {
-	return redis.NewClient(&redis.Options{Addr: "localhost:6379"})
+func ConnectToRedis(endpoint string) *redis.Client {
+	return redis.NewClient(&redis.Options{Addr: endpoint})
 }

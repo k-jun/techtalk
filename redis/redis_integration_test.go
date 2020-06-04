@@ -15,7 +15,8 @@ var r IRedis
 func TestMain(m *testing.M) {
 	var err error
 
-	rc := utils.ConnectToRedis()
+	redisEndpoint := "localhost:6379"
+	rc := utils.ConnectToRedis(redisEndpoint)
 	r, err = NewSRedis(rc)
 	if err != nil {
 		os.Exit(1)

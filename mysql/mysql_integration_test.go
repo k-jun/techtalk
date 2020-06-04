@@ -3,12 +3,11 @@
 package mysql
 
 import (
-	"database/sql"
-	"fmt"
 	"math/rand"
 	"os"
 	"strconv"
 	"techtalk/models"
+	"techtalk/utils"
 	"testing"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -17,11 +16,11 @@ import (
 var db IMySQL
 
 func TestMain(m *testing.M) {
+	dbhost := "localhost"
 	dbusername := "root"
 	dbpassword := "password1!"
 	dbname := "mysqldb"
-	dbinfo := fmt.Sprintf("%s:%s@/%s", dbusername, dbpassword, dbname)
-	conn, err := sql.Open("mysql", dbinfo)
+	conn, err := utils.ConnectToDB(dbusername, dbpassword, dbhost, dbname)
 	if err != nil {
 		panic(err)
 	}

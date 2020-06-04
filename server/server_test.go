@@ -23,23 +23,31 @@ var db mysql.IMySQL
 var rc redis.IRedis
 
 func TestMain(m *testing.M) {
+	dbhost := "localhost"
+	dbusername := "root"
+	dbpassword := "password1!"
+	dbname := "mysqldb"
+	redisEndpoint := "localhost:6379"
 
-	conn, err := utils.ConnectToDB()
+	conn, err := utils.ConnectToDB(dbusername, dbpassword, dbhost, dbname)
 	if err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 	defer conn.Close()
 
-	rrc := utils.ConnectToRedis()
+	rrc := utils.ConnectToRedis(redisEndpoint)
 	defer rrc.Close()
 
 	db, err = mysql.NewSMySQL(conn)
 	if err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
 	rc, err = redis.NewSRedis(rrc)
 	if err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 

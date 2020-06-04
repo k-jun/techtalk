@@ -12,9 +12,14 @@ import (
 )
 
 func main() {
+	dbhost := "localhost"
+	dbusername := "root"
+	dbpassword := "password1!"
+	dbname := "mysqldb"
+	redisEndpoint := "localhost:6379"
 
-	conn, err := utils.ConnectToDB()
-	rc := utils.ConnectToRedis()
+	conn, err := utils.ConnectToDB(dbusername, dbpassword, dbhost, dbname)
+	rc := utils.ConnectToRedis(redisEndpoint)
 
 	if err != nil {
 		panic(err)
