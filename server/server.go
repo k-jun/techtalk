@@ -34,6 +34,7 @@ func NewServer(db *sql.DB, rc *redis.Client) http.Server {
 
 func attachHandlers(mux *mux.Router, db mysql.IMySQL, rds rds.IRedis) {
 	mux.HandleFunc("/channels/{id}/messages", controllers.GetMessages(db, rds)).Methods(http.MethodGet)
-	mux.HandleFunc("/channels/{id}/messages", controllers.PostMessages(db, rds)).Methods(http.MethodPost)
-	mux.HandleFunc("/messages", controllers.PutMessages(db, rds)).Methods(http.MethodPut)
+	mux.HandleFunc("/channels/{id}/messages", controllers.PostMessage(db, rds)).Methods(http.MethodPost)
+	mux.HandleFunc("/messages", controllers.PutMessage(db, rds)).Methods(http.MethodPut)
+	mux.HandleFunc("/messages", controllers.DeleteMessage(db, rds)).Methods(http.MethodDelete)
 }

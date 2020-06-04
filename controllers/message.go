@@ -32,7 +32,7 @@ func GetMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 	}
 }
 
-func PostMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
+func PostMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cid := retrieveIdFromPath(r)
 		m, err := retrieveMessageFromBody(r)
@@ -53,7 +53,7 @@ func PostMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *
 	}
 }
 
-func PutMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
+func PutMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		m, err := retrieveMessageFromBody(r)
 		if err != nil {
@@ -68,21 +68,20 @@ func PutMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 	}
 }
 
-// func DeleteMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-// 		m, err := retrieveMessageFromBody(r)
-// 		if err != nil {
-// 			BadRequest(w, r)
-// 			return
-// 		}
-// 		err = db.DeleteChannelMessage(m.ID)
-// 		if err != nil {
-// 			fmt.Println(err)
-// 			InternalServerError(w, r)
-// 			return
-// 		}
-// 	}
-// }
+func DeleteMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		m, err := retrieveMessageFromBody(r)
+		if err != nil {
+			BadRequest(w, r)
+			return
+		}
+		err = db.DeleteChannelMessage(m.ID)
+		if err != nil {
+			InternalServerError(w, r)
+			return
+		}
+	}
+}
 
 func retrieveIdFromPath(r *http.Request) string {
 	// if number is 0, generate random number
