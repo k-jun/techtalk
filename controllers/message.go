@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -54,8 +53,6 @@ func PostMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 	return func(w http.ResponseWriter, r *http.Request) {
 		cid := retrieveIdFromPath(r)
 		m, err := retrieveMessageFromBody(r)
-
-		fmt.Println(m)
 		if err != nil {
 			BadRequest(w, r)
 			return
@@ -63,11 +60,15 @@ func PostMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 		m.ChannelID = cid
 		err = db.CreateChannelMessage(&m)
 		if err != nil {
-			InternalServerError(w, r)
+			BadRequest(w, r)
 			return
 		}
 
 		bytes, err := json.Marshal(m)
+		if err != nil {
+			InternalServerError(w, r)
+			return
+		}
 		err = rds.Set(cid, "")
 		if err != nil {
 			InternalServerError(w, r)
@@ -88,7 +89,7 @@ func PutMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *ht
 		}
 		err = db.UpdateChannelMessage(&m)
 		if err != nil {
-			InternalServerError(w, r)
+			BadRequest(w, r)
 			return
 		}
 		err = rds.Set(cid, "")
@@ -110,7 +111,7 @@ func DeleteMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, 
 		}
 		err = db.DeleteChannelMessage(m.ID)
 		if err != nil {
-			InternalServerError(w, r)
+			BadRequest(w, r)
 			return
 		}
 		err = rds.Set(cid, "")

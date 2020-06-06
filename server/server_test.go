@@ -108,7 +108,7 @@ func TestPostMessages(t *testing.T) {
 		{
 			url:  "/channels/some_random_string/messages",
 			body: `{"user_id": "1", "type": "%s", "body": "%s"}`,
-			code: 500,
+			code: 400,
 		},
 	}
 
@@ -164,7 +164,7 @@ func TestPutMessages(t *testing.T) {
 			url:        "/channels/1/messages",
 			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
 			updateBody: `{"id": "0", "type": "%s%s", "body": "%s"}`,
-			code:       500,
+			code:       400,
 		},
 	}
 
@@ -238,7 +238,7 @@ func TestDeleteMessages(t *testing.T) {
 			url:        "/channels/1/messages",
 			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
 			deleteBody: `{"id": "%s999"}`,
-			code:       500,
+			code:       400,
 		},
 	}
 
