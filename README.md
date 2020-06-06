@@ -28,7 +28,7 @@ in this case this is for load testing, if you send channel_id=0, the server fill
 }
 ```
 
-* PUT "/messages"
+* PUT "channels/{channel_id}/messages"
 ```json
 {
   "id": "1",
@@ -37,7 +37,7 @@ in this case this is for load testing, if you send channel_id=0, the server fill
 }
 ```
 
-* DELETE "/messages"
+* DELETE "channels/{channel_id}/messages"
 ```json
 {
   "id": "1"

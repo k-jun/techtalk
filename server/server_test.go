@@ -138,68 +138,6 @@ func TestPostMessages(t *testing.T) {
 		}
 
 	}
-
-}
-
-func TestDeleteMessages(t *testing.T) {
-
-	tests := []struct {
-		url        string
-		createBody string
-		deleteBody string
-		code       int
-	}{
-		{
-			url:        "/messages",
-			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
-			deleteBody: `{"id": "%s"}`,
-			code:       200,
-		},
-		{
-			url:        "/messages",
-			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
-			deleteBody: `{"id": "%s999"`,
-			code:       400,
-		},
-		{
-			url:        "/messages",
-			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
-			deleteBody: `{"id": "%s999"}`,
-			code:       500,
-		},
-	}
-
-	for _, test := range tests {
-
-		router := mux.NewRouter()
-		attachHandlers(router, db, rc)
-
-		// make create request
-		recorder := httptest.NewRecorder()
-		bodyByte := []byte(test.createBody)
-		req := httptest.NewRequest(http.MethodPost, "/channels/0/messages", bytes.NewBuffer(bodyByte))
-		router.ServeHTTP(recorder, req)
-
-		// check result
-		if recorder.Code != http.StatusOK {
-			t.Fatal("createBody is invalid")
-		}
-		var m models.Message
-		err := json.Unmarshal(recorder.Body.Bytes(), &m)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		// make update request
-		recorder = httptest.NewRecorder()
-		deleteBody := fmt.Sprintf(test.deleteBody, m.ID)
-		bodyByte = []byte(deleteBody)
-		req = httptest.NewRequest(http.MethodDelete, test.url, bytes.NewBuffer(bodyByte))
-		router.ServeHTTP(recorder, req)
-
-		// check result
-		assert.Equal(t, recorder.Code, test.code)
-	}
 }
 
 func TestPutMessages(t *testing.T) {
@@ -211,19 +149,19 @@ func TestPutMessages(t *testing.T) {
 		code       int
 	}{
 		{
-			url:        "/messages",
+			url:        "/channels/1/messages",
 			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
 			updateBody: `{"id": "%s", "type": "%s", "body": "%s"}`,
 			code:       200,
 		},
 		{
-			url:        "/messages",
+			url:        "/channels/1/messages",
 			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
 			updateBody: `{"id": "%s", "type": "%s", "body": "%s"`,
 			code:       400,
 		},
 		{
-			url:        "/messages",
+			url:        "/channels/1/messages",
 			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
 			updateBody: `{"id": "0", "type": "%s%s", "body": "%s"}`,
 			code:       500,
@@ -240,7 +178,7 @@ func TestPutMessages(t *testing.T) {
 		// make create request
 		recorder := httptest.NewRecorder()
 		bodyByte := []byte(test.createBody)
-		req := httptest.NewRequest(http.MethodPost, "/channels/0/messages", bytes.NewBuffer(bodyByte))
+		req := httptest.NewRequest(http.MethodPost, test.url, bytes.NewBuffer(bodyByte))
 		router.ServeHTTP(recorder, req)
 
 		// check result
@@ -274,4 +212,65 @@ func RandStringRunes(n int) string {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
+}
+
+func TestDeleteMessages(t *testing.T) {
+
+	tests := []struct {
+		url        string
+		createBody string
+		deleteBody string
+		code       int
+	}{
+		{
+			url:        "/channels/1/messages",
+			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
+			deleteBody: `{"id": "%s"}`,
+			code:       200,
+		},
+		{
+			url:        "/channels/1/messages",
+			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
+			deleteBody: `{"id": "%s999"`,
+			code:       400,
+		},
+		{
+			url:        "/channels/1/messages",
+			createBody: `{"user_id": "1", "type": "sample type", "body": "sample body"}`,
+			deleteBody: `{"id": "%s999"}`,
+			code:       500,
+		},
+	}
+
+	for _, test := range tests {
+
+		router := mux.NewRouter()
+		attachHandlers(router, db, rc)
+
+		// make create request
+		recorder := httptest.NewRecorder()
+		bodyByte := []byte(test.createBody)
+		req := httptest.NewRequest(http.MethodPost, test.url, bytes.NewBuffer(bodyByte))
+		router.ServeHTTP(recorder, req)
+
+		// check result
+		if recorder.Code != http.StatusOK {
+			t.Fatal("createBody is invalid")
+		}
+		var m models.Message
+		err := json.Unmarshal(recorder.Body.Bytes(), &m)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		// make update request
+		recorder = httptest.NewRecorder()
+		deleteBody := fmt.Sprintf(test.deleteBody, m.ID)
+		bodyByte = []byte(deleteBody)
+		req = httptest.NewRequest(http.MethodDelete, test.url, bytes.NewBuffer(bodyByte))
+		router.ServeHTTP(recorder, req)
+
+		// check result
+		assert.Equal(t, recorder.Code, test.code)
+	}
 }
