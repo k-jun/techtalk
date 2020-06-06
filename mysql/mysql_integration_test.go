@@ -37,7 +37,7 @@ func TestGetChannelMessage(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(messages) < 100 {
+	if len(messages) < 10 {
 		t.Fatal("result row is too little")
 	}
 }

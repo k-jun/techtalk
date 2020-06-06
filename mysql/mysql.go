@@ -33,7 +33,9 @@ func (m *sMySQL) GetChannelMessage(channelID string) ([]models.Message, error) {
 	rows, err := m.db.Query(`
 		SELECT id, channel_id, user_id, type, body, created_at, updated_at
 		FROM messages as m
-		WHERE m.channel_id = ?`,
+		WHERE m.channel_id = ?
+		ORDER BY id DESC
+		LIMIT 10`,
 		channelID,
 	)
 	if err != nil {
