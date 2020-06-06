@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -10,12 +12,23 @@ import (
 	"techtalk/mysql"
 	"techtalk/redis"
 
+	redislib "github.com/go-redis/redis"
 	"github.com/gorilla/mux"
 )
 
 func GetMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cid := retrieveIdFromPath(r)
+		cache, err := rds.Get(cid)
+		if err != redislib.Nil && err != nil {
+			InternalServerError(w, r)
+			return
+		}
+		if cache != "" {
+			log.Println("cache hit!", "id:", cid)
+			w.Write([]byte(cache))
+			return
+		}
 		messages, err := db.GetChannelMessage(cid)
 		if err != nil {
 			BadRequest(w, r)
@@ -23,6 +36,11 @@ func GetMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 		}
 
 		bytes, err := json.Marshal(messages)
+		if err != nil {
+			InternalServerError(w, r)
+			return
+		}
+		err = rds.Set(cid, string(bytes))
 		if err != nil {
 			InternalServerError(w, r)
 			return
@@ -36,6 +54,8 @@ func PostMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 	return func(w http.ResponseWriter, r *http.Request) {
 		cid := retrieveIdFromPath(r)
 		m, err := retrieveMessageFromBody(r)
+
+		fmt.Println(m)
 		if err != nil {
 			BadRequest(w, r)
 			return
@@ -48,6 +68,11 @@ func PostMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 		}
 
 		bytes, err := json.Marshal(m)
+		err = rds.Set(cid, "")
+		if err != nil {
+			InternalServerError(w, r)
+			return
+		}
 		w.Write(bytes)
 
 	}
@@ -55,6 +80,7 @@ func PostMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 
 func PutMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		cid := retrieveIdFromPath(r)
 		m, err := retrieveMessageFromBody(r)
 		if err != nil {
 			BadRequest(w, r)
@@ -65,17 +91,29 @@ func PutMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *ht
 			InternalServerError(w, r)
 			return
 		}
+		err = rds.Set(cid, "")
+		if err != nil {
+			InternalServerError(w, r)
+			return
+		}
 	}
 }
 
 func DeleteMessage(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		cid := retrieveIdFromPath(r)
 		m, err := retrieveMessageFromBody(r)
+
 		if err != nil {
 			BadRequest(w, r)
 			return
 		}
 		err = db.DeleteChannelMessage(m.ID)
+		if err != nil {
+			InternalServerError(w, r)
+			return
+		}
+		err = rds.Set(cid, "")
 		if err != nil {
 			InternalServerError(w, r)
 			return

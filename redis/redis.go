@@ -1,6 +1,8 @@
 package redis
 
 import (
+	"time"
+
 	"github.com/go-redis/redis"
 )
 
@@ -31,5 +33,5 @@ func (r *sRedis) Get(key string) (string, error) {
 }
 
 func (r *sRedis) Set(key string, value string) error {
-	return r.rc.Set(key, value, 0).Err()
+	return r.rc.Set(key, value, time.Hour*3).Err()
 }
