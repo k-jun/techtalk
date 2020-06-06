@@ -25,11 +25,15 @@ services:
       # MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_ROOT_PASSWORD: "password1!"
       MYSQL_DATABASE: mysqldb
+    # ports:
+    #   - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
       - ./scripts:/docker-entrypoint-initdb.d
   redis:
     image: redis
+    # ports:
+    #   - "6379:6379"
 
 volumes:
   mysql-data:
