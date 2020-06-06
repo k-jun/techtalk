@@ -33,5 +33,5 @@ func (r *sRedis) Get(key string) (string, error) {
 }
 
 func (r *sRedis) Set(key string, value string) error {
-	return r.rc.Set(key, value, time.Hour*3).Err()
+	return r.rc.Set(key, value, 1*time.Minute).Err()
 }
