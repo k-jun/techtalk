@@ -20,6 +20,9 @@ func main() {
 	redisEndpoint := os.Getenv("REDIS_ENDPOINT")
 
 	conn, err := utils.ConnectToDB(dbusername, dbpassword, dbhost, dbname)
+	if err != nil {
+		panic(err)
+	}
 	rc := utils.ConnectToRedis(redisEndpoint)
 
 	if err != nil {
