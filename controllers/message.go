@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -24,7 +23,6 @@ func GetMessages(db mysql.IMySQL, rds redis.IRedis) func(http.ResponseWriter, *h
 			return
 		}
 		if cache != "" {
-			log.Println("cache hit!", "id:", cid)
 			w.Write([]byte(cache))
 			return
 		}
