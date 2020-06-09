@@ -53,6 +53,44 @@ in this case this is for load testing, if you send channel_id=0, the server fill
 
 ## Content
 
+
+* vegeta(https://github.com/tsenart/vegeta)
+```
+brew install vegeta
+echo "GET http://18.180.59.175/channels/1/messages" | vegeta attack -rate=2000 -duration=10s | vegeta report
+```
+
+* Siege(https://github.com/JoeDog/siege)
+
+```sh
+brew install siege
+# bench mark to decide concurrency and requests
+siege -b -t 10s  http://18.180.59.175/channels/0/messaga
+# concurrency and request per user
+siege -c 20 -r 100  http://18.180.59.175/channels/0/messagas
+```
+
+* Apach Bench
+
+```sh
+ab -c 20 -n 10000  http://18.180.59.175/channels/1/messages
+```
+
+
+* wrk
+
+```sh
+brew install wrk
+wrk -c 100 -d 5s http://18.180.59.175/channels/1/messages
+```
+
+* goku
+
+```sh
+brew install k-nasa/tap/goku
+goku kamehameha -c 50 -n 1000 http://13.230.60.181/channels/1/message
+```
+
 https://qiita.com/jun2014/items/121f2dcb2de4c4e77421
 >どんな負荷テスト想定しているかで変わります。
 >「大規模負荷テスト」「サーバ負荷テスト」「処理単位の応答時間」
@@ -64,7 +102,6 @@ https://qiita.com/jun2014/items/121f2dcb2de4c4e77421
 - JMeter(http://jmeter.apache.org/) 
 - k6(https://app.k6.io/projects/3494089)
 https://qiita.com/navitime_tech/items/277fde79adbba3d15217
-- Siege
 - gatling
 - Tsung
 - Locust
