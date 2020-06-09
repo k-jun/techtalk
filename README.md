@@ -96,6 +96,14 @@ https://qiita.com/jun2014/items/121f2dcb2de4c4e77421
 >「大規模負荷テスト」「サーバ負荷テスト」「処理単位の応答時間」
 >高価なものから無償のものまでです。負荷テストツールの選定も大事な負荷テスト計画となりますね。
 
+* locust
+
+we need python to use locust
+
+```sh
+pip3 install locust
+locust
+```
 
 
 ## tool list
@@ -111,11 +119,7 @@ https://qiita.com/furu8ma/items/fb7a45388bfe323b46c1
 - wrk
 - vegeta(https://github.com/tsenart/vegeta)
 - artillery(https://artillery.io/)
-
 - blazemeter(https://www.blazemeter.com/)
-
-
-
 - gostress
 https://github.com/karupanerura/gostress
 
