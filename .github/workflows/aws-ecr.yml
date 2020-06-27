@@ -44,7 +44,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: ${{ secrets.AWS_TASK_DEFINITION }}
-        container-name: sample-app
+        container-name: ${{ secrets.AWS_CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
 
 #     - name: Deploy Amazon ECS task definition
