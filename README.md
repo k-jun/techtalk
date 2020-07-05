@@ -1,4 +1,5 @@
-https://img.shields.io/github/languages/code-size/k-jun/techtalk
+![ソースコードサイズ](https://img.shields.io/github/languages/code-size/k-jun/techtalk)
+
 
 ## environment valiables
 
